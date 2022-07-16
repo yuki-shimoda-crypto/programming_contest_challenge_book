@@ -38,31 +38,35 @@ int main(void)
 	int n, m, *k, *kk;
 
 	scanf("%d%d", &n, &m);
+
 	k = (int *)malloc(sizeof(int) * n);
-	kk = (int **)malloc(sizeof(int *) * n);
+	kk = (int *)malloc(sizeof(int) * n * n);
+
 	for (int i = 0; i < n; i++)
-		kk[i] = (int *)malloc(sizeof(int) * n);
-	
-	qsort(k, n, sizeof(int), compar);
+		scanf("%d", &k[i]);
+
+	for (int c = 0; c < n; c++)
+	{
+		for (int d = 0; d < n; d++)
+		{
+			kk[c * n + d] = k[c] + k[d];
+		}
+	}
+	qsort(kk, n * n, sizeof(int), compar);
 
 	for (int a = 0; a < n; a++)
 	{
 		for (int b = 0; b < n; b++)
 		{
-			for (int c = 0; c < n; c++)
+			if (binary_search(n * n, m - (k[a] + k[b]), kk))
 			{
-				if (binary_search(n, m - (k[a] + k[b] + k[c]), k))
-				{
-					printf("Yes\n");
-					return (0);
-				}
+				printf("Yes\n");
+				return (0);
 			}
 		}
 	}
+
 	printf("No\n");
-	
-	for (int i = 0; i < n; i++)
-		free(kk[i]);
 	free(kk);
 	free(k);
 	return (0);
